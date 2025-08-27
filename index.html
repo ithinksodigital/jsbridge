@@ -4,8 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script type="text/javascript" src="//cdn.evgnet.com/beacon/partnerpwcpoland/jsbridge/scripts/evergage.min.js"></script>
+<!--     <script type="text/javascript" src="//cdn.evgnet.com/beacon/partnerpwcpoland/jsbridge/scripts/evergage.min.js"></script> -->
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>JSBridge Message Handler</title>
+
+<script>
+  // odpalamy timer po załadowaniu strony
+  window.addEventListener("load", function () {
+    setTimeout(function () {
+      const script = document.createElement("script");
+      script.src = "//cdn.evgnet.com/beacon/partnerpwcpoland/jsbridge/scripts/evergage.min.js";
+      script.type = "text/javascript";
+      document.head.appendChild(script);
+      console.log("⚡ Evergage script loaded after 25s delay");
+    }, 25000); // 25000 ms = 25 sekund
+  });
+</script>
+
+    
     <title>JSBridge Message Handler</title>
     <style>
         body {
