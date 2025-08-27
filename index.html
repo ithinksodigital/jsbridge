@@ -10,18 +10,32 @@
 
 <title>JSBridge Message Handler</title>
 
+<div id="countdown" style="font-size:18px; font-weight:bold; margin:20px; color:darkred;">
+  Skrypt załaduje się za 25 sekund...
+</div>
+
 <script>
-  // odpalamy timer po załadowaniu strony
   window.addEventListener("load", function () {
-    setTimeout(function () {
-      const script = document.createElement("script");
-      script.src = "//cdn.evgnet.com/beacon/partnerpwcpoland/jsbridge/scripts/evergage.min.js";
-      script.type = "text/javascript";
-      document.head.appendChild(script);
-      console.log("⚡ Evergage script loaded after 25s delay");
-    }, 25000); // 25000 ms = 25 sekund
+    let seconds = 25;
+    const countdownEl = document.getElementById("countdown");
+
+    const interval = setInterval(() => {
+      seconds--;
+      countdownEl.textContent = `Skrypt załaduje się za ${seconds} sekund...`;
+
+      if (seconds <= 0) {
+        clearInterval(interval);
+        countdownEl.textContent = "Ładowanie skryptu...";
+
+        const script = document.createElement("script");
+        script.src = "//cdn.evgnet.com/beacon/partnerpwcpoland/jsbridge/scripts/evergage.min.js";
+        script.type = "text/javascript";
+        document.head.appendChild(script);
+
+        console.log("⚡ Evergage script loaded after 25s delay");
+      }
+    }, 1000);
   });
-</script>
 
     
     <title>JSBridge Message Handler</title>
