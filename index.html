@@ -9,10 +9,9 @@
 
 <title>JSBridge Message Handler</title>
 
-<!-- Kontener dla progress bara -->
-<div style="width: 80%; max-width: 400px; margin: 30px auto; font-family: sans-serif;">
+<div id="countdown-container" style="width: 80%; max-width: 400px; margin: 30px auto; font-family: sans-serif;">
   <div id="countdown-text" style="text-align:center; font-weight:bold; margin-bottom:10px;">
-    
+    Skrypt załaduje się za 25 sekund...
   </div>
   <div style="width: 100%; height: 20px; background: #eee; border-radius: 10px;">
     <div id="progress-bar" style="width:0%; height:100%; background: #4caf50; border-radius: 10px;"></div>
@@ -24,6 +23,7 @@
     const totalSeconds = 5;
     let secondsLeft = totalSeconds;
 
+    const countdownContainer = document.getElementById("countdown-container");
     const countdownText = document.getElementById("countdown-text");
     const progressBar = document.getElementById("progress-bar");
 
@@ -48,6 +48,9 @@
         document.head.appendChild(script);
 
         console.log("⚡ Evergage script loaded after 25s delay");
+
+        // Ukrycie całego kontenera progress bara
+        countdownContainer.style.display = "none";
       }
     }, 1000);
   });
