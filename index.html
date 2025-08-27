@@ -9,23 +9,39 @@
 
 <title>JSBridge Message Handler</title>
 
-<div id="countdown" style="font-size:18px; font-weight:bold; margin:20px; color:darkred;">
-  Skrypt załaduje się za 25 sekund...
+<!-- Kontener dla progress bara -->
+<div style="width: 80%; max-width: 400px; margin: 30px auto; font-family: sans-serif;">
+  <div id="countdown-text" style="text-align:center; font-weight:bold; margin-bottom:10px;">
+    Skrypt załaduje się za 25 sekund...
+  </div>
+  <div style="width: 100%; height: 20px; background: #eee; border-radius: 10px;">
+    <div id="progress-bar" style="width:0%; height:100%; background: #4caf50; border-radius: 10px;"></div>
+  </div>
 </div>
-
+    
 <script>
   window.addEventListener("load", function () {
-    let seconds = 25;
-    const countdownEl = document.getElementById("countdown");
+    const totalSeconds = 25;
+    let secondsLeft = totalSeconds;
+
+    const countdownText = document.getElementById("countdown-text");
+    const progressBar = document.getElementById("progress-bar");
 
     const interval = setInterval(() => {
-      seconds--;
-      countdownEl.textContent = `Skrypt załaduje się za ${seconds} sekund...`;
+      secondsLeft--;
 
-      if (seconds <= 0) {
+      // Aktualizacja tekstu
+      countdownText.textContent = `Skrypt załaduje się za ${secondsLeft} sekund...`;
+
+      // Aktualizacja progress bara
+      const progressPercent = ((totalSeconds - secondsLeft) / totalSeconds) * 100;
+      progressBar.style.width = progressPercent + "%";
+
+      if (secondsLeft <= 0) {
         clearInterval(interval);
-        countdownEl.textContent = "Ładowanie skryptu...";
+        countdownText.textContent = "Ładowanie skryptu...";
 
+        // Dodanie skryptu dynamicznie
         const script = document.createElement("script");
         script.src = "//cdn.evgnet.com/beacon/partnerpwcpoland/jsbridge/scripts/evergage.min.js";
         script.type = "text/javascript";
@@ -35,8 +51,8 @@
       }
     }, 1000);
   });
-
 </script>
+    
     <style>
         body {
             font-family: Arial, sans-serif;
