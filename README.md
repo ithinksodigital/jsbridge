@@ -85,3 +85,4 @@ Strona obsługuje wiadomości z różnych źródeł JSBridge:
 - Upewnij się, że repozytorium jest publiczne
 - GitHub Pages może potrzebować kilku minut na wdrożenie
 - Strona jest gotowa do użycia z aplikacjami mobilnymi i WebView # jsbridge
+# jsbridge
