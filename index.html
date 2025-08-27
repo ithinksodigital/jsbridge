@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script type="text/javascript" src="//cdn.evgnet.com/beacon/partnerpwcpoland/boots/scripts/evergage.min.js"></script>
+    
+    <title>JSBridge Message Handler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        #jsbridge-messages {
+            background-color: #e8f4fd;
+            border: 1px solid #b3d9ff;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .message-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .message-time {
+            color: #666;
+            font-size: 0.8em;
+            margin-bottom: 5px;
+        }
+        .message-content {
+            font-family: monospace;
+            background-color: #f5f5f5;
+            padding: 8px;
+            border-radius: 3px;
+            word-break: break-all;
+        }
+        .message-location {
+            color: #007bff;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h2>JSBridge Wiadomości</h2>
+        <div id="jsbridge-messages">
+            <p>Oczekiwanie na wiadomości z JSBridge...</p>
+        </div>
+        <div id="message-log"></div>
+    </div>
+    
+    <script>
+        // JSBridge Message Handler
+        class JSBridgeHandler {
+            constructor() {
+                this.messageLog = document.getElementById('message-log');
+                this.messagesContainer = document.getElementById('jsbridge-messages');
+                this.messageCount = 0;
+                this.init();
+            }
+
+            init() {
+                // Nasłuchiwanie na wiadomości z JSBridge
+                this.setupMessageListener();
+                
+                // Nasłuchiwanie na wiadomości postMessage (dla WebView)
+                window.addEventListener('message', (event) => {
+                    this.handleMessage(event.data, 'postMessage');
+                });
+
+                // Nasłuchiwanie na wiadomości z window.webkit.messageHandlers (iOS WKWebView)
+                if (window.webkit && window.webkit.messageHandlers) {
+                    this.setupWebKitHandlers();
+                }
+
+                // Nasłuchiwanie na wiadomości z window.Android (Android WebView)
+                if (window.Android) {
+                    this.setupAndroidHandler();
+                }
+
+                // Nasłuchiwanie na wiadomości z window.ReactNativeWebView
+                if (window.ReactNativeWebView) {
+                    this.setupReactNativeHandler();
+                }
+
+                console.log('JSBridge handler initialized');
+            }
+
+            setupMessageListener() {
+                // Nasłuchiwanie na niestandardowe zdarzenia
+                window.addEventListener('jsbridge-message', (event) => {
+                    this.handleMessage(event.detail, 'custom-event');
+                });
+            }
+
+            setupWebKitHandlers() {
+                // Dla iOS WKWebView
+                if (window.webkit.messageHandlers.jsbridge) {
+                    window.webkit.messageHandlers.jsbridge.postMessage = (message) => {
+                        this.handleMessage(message, 'webkit-messageHandlers');
+                    };
+                }
+            }
+
+            setupAndroidHandler() {
+                // Dla Android WebView
+                window.Android.onMessage = (message) => {
+                    this.handleMessage(message, 'android-webview');
+                };
+            }
+
+            setupReactNativeHandler() {
+                // Dla React Native WebView
+                window.ReactNativeWebView.postMessage = (message) => {
+                    this.handleMessage(message, 'react-native-webview');
+                };
+            }
+
+            handleMessage(message, source) {
+                this.messageCount++;
+                const timestamp = new Date().toLocaleTimeString();
+                
+                // Aktualizuj status
+                this.messagesContainer.innerHTML = `
+                    <p><strong>Otrzymano ${this.messageCount} wiadomości z JSBridge</strong></p>
+                    <p>Ostatnia wiadomość: ${timestamp}</p>
+                `;
+
+                // Dodaj wiadomość do logu
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message-item';
+                messageElement.innerHTML = `
+                    <div class="message-time">${timestamp} (${source})</div>
+                    <div class="message-content">${this.formatMessage(message)}</div>
+                    <div class="message-location">Źródło: ${source}</div>
+                `;
+
+                this.messageLog.insertBefore(messageElement, this.messageLog.firstChild);
+
+                // Ogranicz liczbę wyświetlanych wiadomości do 50
+                while (this.messageLog.children.length > 50) {
+                    this.messageLog.removeChild(this.messageLog.lastChild);
+                }
+
+                console.log('JSBridge message received:', message, 'from:', source);
+            }
+
+            formatMessage(message) {
+                if (typeof message === 'string') {
+                    return message;
+                } else if (typeof message === 'object') {
+                    return JSON.stringify(message, null, 2);
+                } else {
+                    return String(message);
+                }
+            }
+
+            // Metoda do testowania - można wywołać z konsoli
+            testMessage() {
+                this.handleMessage({
+                    type: 'test',
+                    data: 'Test message from JSBridge',
+                    timestamp: Date.now()
+                }, 'test');
+            }
+        }
+
+        // Inicjalizacja JSBridge handler
+        let jsbridgeHandler;
+        window.addEventListener('load', function() {
+            jsbridgeHandler = new JSBridgeHandler();
+        });
+    </script>
+</body>
+</html> 
