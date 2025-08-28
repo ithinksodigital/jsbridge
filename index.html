@@ -123,25 +123,22 @@
         //     }
 
         //     init() {
-        //         // Nasłuchiwanie na wiadomości z JSBridge
+        //       
         //         this.setupMessageListener();
                 
-        //         // Nasłuchiwanie na wiadomości postMessage (dla WebView)
+        //       
         //         window.addEventListener('message', (event) => {
         //             this.handleMessage(event.data, 'postMessage');
         //         });
 
-        //         // Nasłuchiwanie na wiadomości z window.webkit.messageHandlers (iOS WKWebView)
         //         if (window.webkit && window.webkit.messageHandlers) {
         //             this.setupWebKitHandlers();
         //         }
 
-        //         // Nasłuchiwanie na wiadomości z window.Android (Android WebView)
         //         if (window.Android) {
         //             this.setupAndroidHandler();
         //         }
 
-        //         // Nasłuchiwanie na wiadomości z window.ReactNativeWebView
         //         if (window.ReactNativeWebView) {
         //             this.setupReactNativeHandler();
         //         }
@@ -150,14 +147,12 @@
         //     }
 
         //     setupMessageListener() {
-        //         // Nasłuchiwanie na niestandardowe zdarzenia
         //         window.addEventListener('jsbridge-message', (event) => {
         //             this.handleMessage(event.detail, 'custom-event');
         //         });
         //     }
 
         //     setupWebKitHandlers() {
-        //         // Dla iOS WKWebView
         //         if (window.webkit.messageHandlers.jsbridge) {
         //             window.webkit.messageHandlers.jsbridge.postMessage = (message) => {
         //                 this.handleMessage(message, 'webkit-messageHandlers');
@@ -166,14 +161,12 @@
         //     }
 
         //     setupAndroidHandler() {
-        //         // Dla Android WebView
         //         window.Android.onMessage = (message) => {
         //             this.handleMessage(message, 'android-webview');
         //         };
         //     }
 
         //     setupReactNativeHandler() {
-        //         // Dla React Native WebView
         //         window.ReactNativeWebView.postMessage = (message) => {
         //             this.handleMessage(message, 'react-native-webview');
         //         };
@@ -189,7 +182,6 @@
         //             <p>Ostatnia wiadomość: ${timestamp}</p>
         //         `;
 
-        //         // Dodaj wiadomość do logu
         //         const messageElement = document.createElement('div');
         //         messageElement.className = 'message-item';
         //         messageElement.innerHTML = `
@@ -200,7 +192,6 @@
 
         //         this.messageLog.insertBefore(messageElement, this.messageLog.firstChild);
 
-        //         // Ogranicz liczbę wyświetlanych wiadomości do 50
         //         while (this.messageLog.children.length > 50) {
         //             this.messageLog.removeChild(this.messageLog.lastChild);
         //         }
@@ -218,7 +209,6 @@
         //         }
         //     }
 
-        //     // Metoda do testowania - można wywołać z konsoli
         //     testMessage() {
         //         this.handleMessage({
         //             type: 'test',
@@ -228,7 +218,6 @@
         //     }
         // }
 
-        // Inicjalizacja JSBridge handler
         // let jsbridgeHandler;
         // window.addEventListener('load', function() {
         //     jsbridgeHandler = new JSBridgeHandler();
