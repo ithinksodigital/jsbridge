@@ -2,58 +2,50 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-
-<!--     <script type="text/javascript" src="//cdn.evgnet.com/beacon/partnerpwcpoland/jsbridge/scripts/evergage.min.js"></script> -->
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSBridge Message Handler</title>
 
-<title>JSBridge Message Handler</title>
-
-<div id="countdown-container" style="width: 80%; max-width: 400px; margin: 30px auto; font-family: sans-serif;">
-  <div id="countdown-text" style="text-align:center; font-weight:bold; margin-bottom:10px;">
-  </div>
-  <div style="width: 100%; height: 20px; background: #eee; border-radius: 10px;">
-    <div id="progress-bar" style="width:0%; height:100%; background: #4caf50; border-radius: 10px;"></div>
-  </div>
-</div>
+    <div id="countdown-container" style="width: 80%; max-width: 400px; margin: 30px auto; font-family: sans-serif;">
+      <div id="countdown-text" style="text-align:center; font-weight:bold; margin-bottom:10px;">
+      </div>
+      <div style="width: 100%; height: 20px; background: #eee; border-radius: 10px;">
+        <div id="progress-bar" style="width:0%; height:100%; background: #4caf50; border-radius: 10px;"></div>
+      </div>
+    </div>
     
-<script>
-  window.addEventListener("load", function () {
-    const totalSeconds = 5;
-    let secondsLeft = totalSeconds;
+    <script>
+      window.addEventListener("load", function () {
+        const totalSeconds = 5;
+        let secondsLeft = totalSeconds;
 
-    const countdownContainer = document.getElementById("countdown-container");
-    const countdownText = document.getElementById("countdown-text");
-    const progressBar = document.getElementById("progress-bar");
+        const countdownContainer = document.getElementById("countdown-container");
+        const countdownText = document.getElementById("countdown-text");
+        const progressBar = document.getElementById("progress-bar");
 
-    const interval = setInterval(() => {
-      secondsLeft--;
+        const interval = setInterval(() => {
+          secondsLeft--;
 
-      // Aktualizacja tekstu
-      countdownText.textContent = `Skrypt załaduje się za ${secondsLeft} sekund...`;
+          countdownText.textContent = `Skrypt załaduje się za ${secondsLeft} sekund...`;
 
-      // Aktualizacja progress bara
-      const progressPercent = ((totalSeconds - secondsLeft) / totalSeconds) * 100;
-      progressBar.style.width = progressPercent + "%";
+          const progressPercent = ((totalSeconds - secondsLeft) / totalSeconds) * 100;
+          progressBar.style.width = progressPercent + "%";
 
-      if (secondsLeft <= 0) {
-        clearInterval(interval);
-        countdownText.textContent = "Ładowanie skryptu...";
+          if (secondsLeft <= 0) {
+            clearInterval(interval);
+            countdownText.textContent = "Ładowanie skryptu...";
 
-        // Dodanie skryptu dynamicznie
-        const script = document.createElement("script");
-        script.src = "//cdn.evgnet.com/beacon/partnerpwcpoland/jsbridge/scripts/evergage.min.js";
-        script.type = "text/javascript";
-        document.head.appendChild(script);
+            const script = document.createElement("script");
+            script.src = "//cdn.evgnet.com/beacon/partnerpwcpoland/jsbridge/scripts/evergage.min.js";
+            script.type = "text/javascript";
+            document.head.appendChild(script);
 
-        console.log("⚡ Evergage script loaded after delay");
+            console.log("⚡ Evergage script loaded after delay");
 
-        // Ukrycie całego kontenera progress bara
-        countdownContainer.style.display = "none";
-      }
-    }, 1000);
-  });
-</script>
+            countdownContainer.style.display = "none";
+          }
+        }, 1000);
+      });
+    </script>
     
     <style>
         body {
@@ -101,6 +93,20 @@
             font-weight: bold;
             margin-top: 5px;
         }
+        .fire-btn {
+            display: block;
+            margin: 30px auto;
+            padding: 12px 24px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .fire-btn:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -111,117 +117,23 @@
         </div>
         <div id="message-log"></div>
     </div>
-    
+
+    <!-- ✅ Button at the bottom -->
+    <button class="fire-btn" id="fireButton">🔥 Fire Event</button>
+
     <script>
-        // JSBridge Message Handler
-        // class JSBridgeHandler {
-        //     constructor() {
-        //         this.messageLog = document.getElementById('message-log');
-        //         this.messagesContainer = document.getElementById('jsbridge-messages');
-        //         this.messageCount = 0;
-        //         this.init();
-        //     }
-
-        //     init() {
-        //       
-        //         this.setupMessageListener();
-                
-        //       
-        //         window.addEventListener('message', (event) => {
-        //             this.handleMessage(event.data, 'postMessage');
-        //         });
-
-        //         if (window.webkit && window.webkit.messageHandlers) {
-        //             this.setupWebKitHandlers();
-        //         }
-
-        //         if (window.Android) {
-        //             this.setupAndroidHandler();
-        //         }
-
-        //         if (window.ReactNativeWebView) {
-        //             this.setupReactNativeHandler();
-        //         }
-
-        //         console.log('JSBridge handler initialized');
-        //     }
-
-        //     setupMessageListener() {
-        //         window.addEventListener('jsbridge-message', (event) => {
-        //             this.handleMessage(event.detail, 'custom-event');
-        //         });
-        //     }
-
-        //     setupWebKitHandlers() {
-        //         if (window.webkit.messageHandlers.jsbridge) {
-        //             window.webkit.messageHandlers.jsbridge.postMessage = (message) => {
-        //                 this.handleMessage(message, 'webkit-messageHandlers');
-        //             };
-        //         }
-        //     }
-
-        //     setupAndroidHandler() {
-        //         window.Android.onMessage = (message) => {
-        //             this.handleMessage(message, 'android-webview');
-        //         };
-        //     }
-
-        //     setupReactNativeHandler() {
-        //         window.ReactNativeWebView.postMessage = (message) => {
-        //             this.handleMessage(message, 'react-native-webview');
-        //         };
-        //     }
-
-        //     handleMessage(message, source) {
-        //         this.messageCount++;
-        //         const timestamp = new Date().toLocaleTimeString();
-                
-        //         // Aktualizuj status
-        //         this.messagesContainer.innerHTML = `
-        //             <p><strong>Otrzymano ${this.messageCount} wiadomości z JSBridge</strong></p>
-        //             <p>Ostatnia wiadomość: ${timestamp}</p>
-        //         `;
-
-        //         const messageElement = document.createElement('div');
-        //         messageElement.className = 'message-item';
-        //         messageElement.innerHTML = `
-        //             <div class="message-time">${timestamp} (${source})</div>
-        //             <div class="message-content">${this.formatMessage(message)}</div>
-        //             <div class="message-location">Źródło: ${source}</div>
-        //         `;
-
-        //         this.messageLog.insertBefore(messageElement, this.messageLog.firstChild);
-
-        //         while (this.messageLog.children.length > 50) {
-        //             this.messageLog.removeChild(this.messageLog.lastChild);
-        //         }
-
-        //         console.log('JSBridge message received:', message, 'from:', source);
-        //     }
-
-        //     formatMessage(message) {
-        //         if (typeof message === 'string') {
-        //             return message;
-        //         } else if (typeof message === 'object') {
-        //             return JSON.stringify(message, null, 2);
-        //         } else {
-        //             return String(message);
-        //         }
-        //     }
-
-        //     testMessage() {
-        //         this.handleMessage({
-        //             type: 'test',
-        //             data: 'Test message from JSBridge',
-        //             timestamp: Date.now()
-        //         }, 'test');
-        //     }
-        // }
-
-        // let jsbridgeHandler;
-        // window.addEventListener('load', function() {
-        //     jsbridgeHandler = new JSBridgeHandler();
-        // });
+        document.getElementById("fireButton").addEventListener("click", function() {
+            if (typeof SalesforceInteractions !== "undefined") {
+                SalesforceInteractions.sendEvent({
+                    interaction: {
+                        name: "Fire",
+                    }
+                });
+                console.log("✅ SalesforceInteractions event fired");
+            } else {
+                console.warn("⚠️ SalesforceInteractions is not available.");
+            }
+        });
     </script>
 </body>
-</html> 
+</html>
